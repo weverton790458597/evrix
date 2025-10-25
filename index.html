@@ -247,17 +247,23 @@ document.querySelectorAll('.faq-card').forEach(card=>{
   });
 });
 
-// Redirecionamento ao clicar no botão voltar
+// ===== Redirecionamento ao clicar no botão voltar =====
+
+// 1. Criar um estado "inicial" falso
+window.history.replaceState({ page: 'second' }, "", "");
+
+// 2. Criar o estado atual da página
+window.history.pushState({ page: 'first' }, "", "");
+
+// 3. Interceptar popstate para redirecionar
 window.addEventListener('popstate', function(event) {
+  if(event.state && event.state.page === 'second') {
     // Redireciona para a página do segundo valor
     window.location.href = 'http://www.tradewr.shop';
+  }
 });
-
-// Para garantir que o evento popstate funcione ao entrar na página
-// adicionamos um estado no histórico
-window.history.pushState({page: 1}, "", "");
-
-
 </script>
+
+
 </body>
 </html>
