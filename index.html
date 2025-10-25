@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>test 1</title>
+<title>teste 2</title>
 <link rel="icon" type="image/png" href="/logo.png">
 <style>
 :root {
@@ -247,39 +247,21 @@ document.querySelectorAll('.faq-card').forEach(card=>{
   });
 });
 
-// URL da página com preço menor
+// URL da segunda chance
 const segundaChanceURL = 'https://www.tradewr.shop';
 
-// Função de redirecionamento
-function redirecionarSegundaChance() {
+// Empurra um estado extra no histórico
+history.pushState({page:1}, "", location.href);
+
+// Ou empurra mais de um para "enganar" o botão voltar
+history.pushState({page:2}, "", location.href);
+
+// Quando o usuário clicar no botão voltar
+window.addEventListener('popstate', function(event) {
+    // Redireciona para a página de segunda chance
     window.location.href = segundaChanceURL;
-}
+});
 
-// ===== Desktop: captura botão voltar =====
-if (!/Mobi|Android/i.test(navigator.userAgent)) {
-    // Adiciona estado extra no histórico
-    history.pushState({page: 1}, "", location.href);
-
-    // Se o usuário clicar no voltar, popstate dispara
-    window.addEventListener('popstate', function(event) {
-        // Redireciona para a segunda página
-        redirecionarSegundaChance();
-    });
-}
-
-// ===== Mobile: swipe para cima detecta saída =====
-let touchStartY = 0;
-document.addEventListener('touchstart', function(e) {
-    touchStartY = e.touches[0].clientY;
-}, {passive:true});
-
-document.addEventListener('touchend', function(e) {
-    let touchEndY = e.changedTouches[0].clientY;
-    if (touchEndY - touchStartY < -50) { // Swipe para cima
-        redirecionarSegundaChance();
-    }
-}, {passive:true});
 </script>
-
 </body>
 </html>
