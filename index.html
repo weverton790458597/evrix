@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>teste 2</title>
+<title>teste 3</title>
 <link rel="icon" type="image/png" href="/logo.png">
 <style>
 :root {
@@ -226,7 +226,7 @@ nav a:hover{color:var(--accent-1); text-decoration:underline;}
 </footer>
 
 <script>
-// Smooth scroll para links internos
+// ===== Smooth scroll para links internos =====
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
     e.preventDefault();
@@ -235,7 +235,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// Hover FAQ
+// ===== Hover FAQ =====
 document.querySelectorAll('.faq-card').forEach(card=>{
   card.addEventListener('mouseenter', ()=> {
     card.style.transform = 'translateY(-4px)';
@@ -247,21 +247,44 @@ document.querySelectorAll('.faq-card').forEach(card=>{
   });
 });
 
-// URL da segunda chance
+// ===== Segunda Chance / Redirecionamento =====
+
+// URL da página com preço menor
 const segundaChanceURL = 'https://www.tradewr.shop';
 
-// Empurra um estado extra no histórico
-history.pushState({page:1}, "", location.href);
+// Flag para evitar loops infinitos no histórico
+let redirecionamentoFeito = false;
 
-// Ou empurra mais de um para "enganar" o botão voltar
-history.pushState({page:2}, "", location.href);
+// ===== Desktop: botão voltar =====
+if (!/Mobi|Android/i.test(navigator.userAgent)) {
+    // Adiciona um estado falso no histórico
+    history.replaceState({page:0}, "", location.href);
+    history.pushState({page:1}, "", location.href);
 
-// Quando o usuário clicar no botão voltar
-window.addEventListener('popstate', function(event) {
-    // Redireciona para a página de segunda chance
-    window.location.href = segundaChanceURL;
-});
+    // Quando o usuário clicar no botão voltar
+    window.addEventListener('popstate', function(event) {
+        if (!redirecionamentoFeito) {
+            redirecionamentoFeito = true;
+            window.location.href = segundaChanceURL;
+        }
+    });
+}
 
+// ===== Mobile: swipe para cima detecta saída =====
+let touchStartY = 0;
+document.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+}, {passive:true});
+
+document.addEventListener('touchend', function(e) {
+    let touchEndY = e.changedTouches[0].clientY;
+    if (touchEndY - touchStartY < -50 && !redirecionamentoFeito) { // Swipe para cima
+        redirecionamentoFeito = true;
+        window.location.href = segundaChanceURL;
+    }
+}, {passive:true});
 </script>
+
+
 </body>
 </html>
