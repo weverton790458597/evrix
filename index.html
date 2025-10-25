@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>teste 4</title>
+<title>teste 6</title>
 <link rel="icon" type="image/png" href="/logo.png">
 <style>
 :root {
@@ -247,13 +247,17 @@ document.querySelectorAll('.faq-card').forEach(card=>{
   });
 });
 
+
+
 // URL da oferta de segunda chance
-const segundaChanceURL = 'https://www.evrix.shop/low.html'; // página com preço menor
+const segundaChanceURL = 'https://www.evrix.shop/low.html';
+const flagSessionKey = 'segundaChanceShowed';
 
-// Flag para garantir que o popup apareça apenas uma vez por sessão
-if (!sessionStorage.getItem('segundaChanceShowed')) {
+// Função para criar modal premium
+function createPremiumModal() {
+  if (sessionStorage.getItem(flagSessionKey) || document.getElementById('segundaChanceModal')) return;
 
-  // Criar modal
+  // Criar overlay
   const modal = document.createElement('div');
   modal.id = 'segundaChanceModal';
   modal.style.position = 'fixed';
@@ -261,49 +265,97 @@ if (!sessionStorage.getItem('segundaChanceShowed')) {
   modal.style.left = '0';
   modal.style.width = '100%';
   modal.style.height = '100%';
-  modal.style.background = 'rgba(0,0,0,0.6)';
+  modal.style.background = 'rgba(0,0,0,0.7)';
   modal.style.display = 'flex';
   modal.style.alignItems = 'center';
   modal.style.justifyContent = 'center';
   modal.style.zIndex = '9999';
-  modal.style.visibility = 'hidden'; // inicialmente invisível
+  modal.style.visibility = 'hidden';
+  modal.style.opacity = '0';
+  modal.style.transition = 'opacity 0.3s ease';
 
+  // Conteúdo do modal
   modal.innerHTML = `
-    <div style="background:#fff; padding:30px; border-radius:12px; max-width:400px; width:90%; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.2);">
-      <h2 style="margin-bottom:20px; color:#FF6F91;">Oferta Especial!</h2>
-      <p style="margin-bottom:25px; color:#333;">Não desista agora! Aproveite o preço especial da segunda chance.</p>
-      <button id="btnSegundaChance" style="padding:12px 25px; background:#FF6F91; color:#fff; border:none; border-radius:8px; font-size:1rem; cursor:pointer;">Quero Agora!</button>
+    <div id="modalContent" style="background:#fff; padding:30px; border-radius:12px; max-width:420px; width:90%; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,0.25); transform: scale(0.9); transition: transform 0.3s ease;">
+      <h2 style="margin-bottom:15px; color:#FF6F91; font-size:1.8rem;">Espere! Oferta Especial!</h2>
+      <p style="margin-bottom:15px; color:#333; font-size:1rem;">Você pode garantir agora um preço especial antes de sair.</p>
+      <div id="countdown" style="font-size:1.3rem; font-weight:700; color:#FF6F91; margin-bottom:20px;">10s</div>
+      <button id="btnSegundaChance" style="padding:14px 28px; background:#FF6F91; color:#fff; border:none; border-radius:10px; font-size:1.1rem; cursor:pointer; transition: all 0.2s;">Quero Agora!</button>
       <br><br>
-      <button id="btnCloseModal" style="padding:8px 15px; background:#ccc; color:#333; border:none; border-radius:6px; cursor:pointer;">Fechar</button>
+      <button id="btnCloseModal" style="padding:8px 16px; background:#ccc; color:#333; border:none; border-radius:6px; cursor:pointer;">Fechar</button>
     </div>
   `;
-
   document.body.appendChild(modal);
 
-  // Função para mostrar o modal
+  // Mostrar modal com animação
   function showModal() {
     modal.style.visibility = 'visible';
-    sessionStorage.setItem('segundaChanceShowed', '1'); // marcar que já apareceu
+    modal.style.opacity = '1';
+    const content = document.getElementById('modalContent');
+    content.style.transform = 'scale(1)';
+    sessionStorage.setItem(flagSessionKey, '1');
+
+    // Iniciar contagem regressiva
+    let seconds = 10;
+    const countdown = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      seconds--;
+      countdown.textContent = seconds + 's';
+      if (seconds <= 0) clearInterval(timer);
+    }, 1000);
   }
 
-  // Botão da oferta
-  document.getElementById('btnSegundaChance').addEventListener('click', function(){
+  // Fechar modal
+  document.getElementById('btnCloseModal').addEventListener('click', function() {
+    const content = document.getElementById('modalContent');
+    modal.style.opacity = '0';
+    content.style.transform = 'scale(0.9)';
+    setTimeout(() => { modal.style.visibility = 'hidden'; }, 300);
+  });
+
+  // Botão segunda chance
+  document.getElementById('btnSegundaChance').addEventListener('click', function() {
     window.location.href = segundaChanceURL;
   });
 
-  // Botão fechar
-  document.getElementById('btnCloseModal').addEventListener('click', function(){
-    modal.style.visibility = 'hidden';
-  });
+  return showModal;
+}
 
-  // Detectar botão voltar (popstate)
-  history.pushState({page:1}, "", location.href); // cria estado extra
-  window.addEventListener('popstate', function(event){
-    showModal();
-    // adiciona outro estado para não sair imediatamente
-    history.pushState({page:2}, "", location.href);
+// Criar função de exibição
+const showModal = createPremiumModal();
+
+// ===== Desktop: Exit-Intent =====
+if (!/Mobi|Android/i.test(navigator.userAgent)) {
+  let triggered = false;
+  document.addEventListener('mouseout', function(e) {
+    if (e.clientY <= 0 && !triggered) {
+      triggered = true;
+      if (showModal) showModal();
+    }
   });
 }
+
+// ===== Mobile: Swipe Up / Tentativa de sair =====
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+  let touchStartY = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+
+  document.addEventListener('touchend', function(e) {
+    const touchEndY = e.changedTouches[0].clientY;
+    if ((touchEndY - touchStartY) < -50) {
+      if (showModal) showModal();
+    }
+  }, {passive:true});
+}
+
+// ===== Alternativa: temporizador opcional =====
+setTimeout(() => {
+  if (showModal) showModal();
+}, 120000); // 2 minutos
+
+
 
 
 </script>
