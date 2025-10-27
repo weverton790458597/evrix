@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 Semanas de Transformação</title>
+<link rel="icon" type="image/png" href="/logo.png">
+<style>
+:root {
+  --bg-light:#fef6f0;
+  --glass: rgba(255,255,255,0.6);
+  --glass-strong: rgba(255,255,255,0.85);
+  --accent-1:#FF6F91;
+  --accent-2:#FFB5C5;
+  --accent-3:#FFD3B6;
+  --muted:#8b6f72;
+  --card-radius:16px;
+  --font-sans:"Poppins","Inter","Segoe UI",Roboto,sans-serif;
+}
+
+*{box-sizing:border-box;}
+body {
+  margin:0; padding:0; font-family:var(--font-sans);
+  background:var(--bg-light); color:#3e3e3e; line-height:1.5;
+  overflow-x:hidden; position:relative;
+}
+a{color:inherit; text-decoration:none;}
+button{font:inherit; cursor:pointer;}
+img{max-width:100%; display:block;}
+
+/* ===== Background animado ===== */
+body::before {
+  content:""; position:fixed; inset:0; z-index:-2;
+  background:linear-gradient(120deg, #ffd3b6, #ffb5c5, #ff6f91);
+  background-size:400% 400%;
+  animation:gradientMove 20s ease infinite;
+  opacity:0.15;
+}
+
+@keyframes gradientMove {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ===== Linhas decorativas ===== */
+.decorative-lines {
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+}
+.decorative-lines svg { width:100%; height:100%; }
+
+/* ===== Header ===== */
+header {
+  position:sticky; top:0; z-index:50;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px 24px; backdrop-filter: blur(6px);
+  background: rgba(255,255,255,0.85);
+  border-bottom:1px solid rgba(255,111,145,0.3);
+}
+.brand { display:flex; align-items:center; gap:12px; cursor:pointer; }
+.brand img{height:40px;width:40px;border-radius:8px;}
+.brand h1{margin:0; font-size:1.1rem; color:var(--accent-1);}
+nav{display:flex; gap:16px;}
+nav a{font-weight:600; font-size:0.95rem; color:var(--muted);}
+nav a:hover{color:var(--accent-1); text-decoration:underline;}
+
+/* ===== Hero ===== */
+.hero {
+  position:relative; z-index:10; display:grid; place-items:center;
+  text-align:center; padding:80px 20px 60px;
+}
+.hero-inner { max-width:1000px; width:100%; display:grid; gap:20px; align-items:center;}
+.hero-title {
+  font-size:clamp(36px,6vw,60px); font-weight:700;
+  background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  -webkit-background-clip:text; color:transparent; line-height:1.1;
+}
+.hero-sub { font-size:1.05rem; color:#5e4b50; max-width:700px; margin:0 auto; font-weight:500;}
+.cta-wrap { display:flex; gap:16px; justify-content:center; margin-top:18px; flex-wrap:wrap;}
+.cta {
+  position:relative; display:inline-block;
+  background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color:#fff; padding:14px 28px; border-radius:999px; font-weight:600;
+  box-shadow:0 6px 20px rgba(255,111,145,0.3);
+  border:none; transition:transform .18s ease, box-shadow .18s ease;
+}
+.cta:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(255,111,145,0.35);}
+.cta:active { transform:translateY(-1px) scale(.99);}
+.cta-ghost{
+  padding:12px 20px; border-radius:10px; background:transparent;
+  border:1px solid var(--accent-2); color:var(--accent-2); font-weight:600;
+  transition:all .18s ease;
+}
+.cta-ghost:hover{border-color:var(--accent-1); color:var(--accent-1);}
+
+/* ===== Benefícios ===== */
+.benefits { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+.benefit-card {
+  background:var(--glass); border-radius:var(--card-radius); padding:20px;
+  display:flex; gap:14px; align-items:flex-start; backdrop-filter:blur(10px);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.benefit-card:hover { transform:translateY(-6px); box-shadow:0 12px 28px rgba(255,111,145,0.25);}
+.benefit-ico {
+  width:50px; height:50px; display:grid; place-items:center; background:var(--glass); border-radius:12px;
+  font-size:1.5rem;
+}
+.benefit-body h4 { color:var(--accent-1); margin:0 0 6px 0; font-weight:600; }
+.benefit-body p { color:#5e4b50; margin:0; font-size:0.95rem; }
+
+/* ===== Responsividade ===== */
+@media(max-width:980px){ .hero {padding:60px 16px 50px;} }
+@media(max-width:560px){ .hero-title{font-size:28px;} .cta-wrap{flex-direction:column; gap:12px;} }
+
+</style>
+
+<!-- 🧩 Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1070321191738851');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1070321191738851&ev=PageView&noscript=1"
+/></noscript>
+<!-- 🧩 End Meta Pixel Code -->
+
+</head>
+<body>
+
+<!-- Linhas decorativas SVG -->
+<div class="decorative-lines">
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <path d="M0 200 C 300 100, 500 300, 800 150 C 1100 50, 1400 200, 1600 100" stroke="rgba(255,111,145,0.2)" stroke-width="4" fill="none"/>
+  <path d="M0 400 C 300 300, 500 500, 800 350 C 1100 250, 1400 400, 1600 300" stroke="rgba(255,181,197,0.15)" stroke-width="3" fill="none"/>
+</svg>
+</div>
+
+<header>
+  <div class="brand" onclick="location.href='index.html'">
+    <img src="/logo.png" alt="Logo 12 Semanas">
+    <h1>12 Semanas</h1>
+  </div>
+  <nav aria-label="menu principal">
+    <a href="#benefits">Benefícios</a>
+    <a href="#details">Detalhes</a>
+    <a href="#pricing">Preço</a>
+  </nav>
+</header>
+
+<section class="hero" role="region" aria-label="Hero Section">
+  <div class="hero-inner">
+    <h1 class="hero-title">Transforme seu corpo em 12 Semanas</h1>
+    <p class="hero-sub">Descubra o método cientificamente comprovado para perder gordura, ganhar energia e sentir-se confiante no seu corpo.</p>
+    <div class="cta-wrap">
+      <button class="cta" onclick="location.href='https://pay.kiwify.com.br/334Pd3k'">Comece Agora</button>
+      <button class="cta-ghost" onclick="document.getElementById('details').scrollIntoView({behavior:'smooth'})">Ver Detalhes</button>
+    </div>
+  </div>
+</section>
+
+<main>
+<div class="panel">
+
+<!-- BENEFÍCIOS -->
+<section id="benefits" aria-labelledby="benefitsLabel" style="margin-top:40px;">
+  <h2 id="benefitsLabel" style="text-align:center;margin-bottom:8px; font-size:1.5rem; color:var(--accent-1)">O que você vai conquistar</h2>
+  <p style="text-align:center;color:var(--muted);margin-bottom:24px">Resultados reais e sustentáveis ao longo de 12 semanas</p>
+  <div class="benefits">
+    <div class="benefit-card"><div class="benefit-ico">🔥</div><div class="benefit-body"><h4>Queima de gordura eficiente</h4><p>Aprenda a ativar seu metabolismo para perder gordura de forma saudável e duradoura.</p></div></div>
+    <div class="benefit-card"><div class="benefit-ico">💪</div><div class="benefit-body"><h4>Mais energia e disposição</h4><p>Sinta-se motivada e cheia de energia para o seu dia a dia.</p></div></div>
+    <div class="benefit-card"><div class="benefit-ico">📝</div><div class="benefit-body"><h4>Plano passo a passo</h4><p>Siga o método de forma clara e prática, sem complicações.</p></div></div>
+    <div class="benefit-card"><div class="benefit-ico">🧘‍♀️</div><div class="benefit-body"><h4>Equilíbrio emocional</h4><p>Controle da ansiedade e hábitos saudáveis sem sofrimento.</p></div></div>
+  </div>
+</section>
+
+<!-- DETALHES DO E-BOOK -->
+<section id="details" aria-labelledby="detailsLabel" style="margin-top:60px;">
+  <div class="details" style="display:grid; grid-template-columns:1fr 350px; gap:20px; align-items:start;">
+    <div class="details-left" style="background:var(--glass-strong); padding:20px; border-radius:var(--card-radius); border:1px solid rgba(255,111,145,0.3); backdrop-filter:blur(10px);">
+      <h3 id="detailsLabel" style="color:var(--accent-1)">O que é o e-book 12 Semanas de Transformação?</h3>
+      <p style="color:#5e4b50; margin-top:10px;">Um guia completo que une ciência e prática para emagrecimento seguro e eficaz. Com ele, você terá acesso a estratégias testadas e resultados concretos em 12 semanas.</p>
+      <ul style="color:#5e4b50; margin-top:12px; padding-left:18px;">
+        <li>✅ Fundamentos científicos para perder gordura</li>
+        <li>✅ Cardápios e estratégias de baixo carboidrato + restrição calórica</li>
+        <li>✅ Métodos para manter resultados e evitar efeito sanfona</li>
+        <li>✅ Dicas de estilo de vida, sono e equilíbrio emocional</li>
+      </ul>
+    </div>
+
+    <aside class="details-right" style="background:var(--glass); border-radius:var(--card-radius); padding:20px; border:1px solid rgba(255,111,145,0.25); display:flex; flex-direction:column; align-items:center; box-shadow:0 8px 30px rgba(255,111,145,0.1);">
+      <div class="price-tag" style="text-align:center; width:100%;">
+        <div style="font-size:1rem; font-weight:700; color:var(--accent-1)">E-book 12 Semanas</div>
+        <div class="price" style="font-size:1.8rem; font-weight:800; color:#3e3e3e; margin-top:8px;">R$49,90</div>
+        <small style="color:var(--muted);">Pagamento único</small>
+        <div style="margin-top:14px;">
+          <button class="cta" style="width:100%;" onclick="location.href='https://pay.kiwify.com.br/334Pd3k'">Quero Começar Agora</button>
+        </div>
+        <div class="muted-note" style="margin-top:8px; font-size:0.9rem; color:var(--muted);">Transforme seu corpo em 12 semanas.</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- CALL TO ACTION FINAL -->
+<section id="final-cta" style="margin-top:60px; text-align:center; padding:40px 18px; background:linear-gradient(180deg, rgba(255,111,145,0.05), rgba(255,111,145,0.02)); border-radius:var(--card-radius);">
+  <h2 style="font-size:1.8rem; color:var(--accent-2); margin-bottom:16px;">Pronta para sua transformação?</h2>
+  <p style="color:#5e4b50; max-width:700px; margin:0 auto 24px;">Em apenas 12 semanas, você terá acesso a estratégias científicas de emagrecimento, cardápios práticos, suporte emocional e muito mais. Não deixe para depois!</p>
+  <button class="cta" style="padding:16px 32px; font-size:1.1rem;" onclick="location.href='https://pay.kiwify.com.br/334Pd3k'">Quero Começar Agora</button>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="margin-top:60px; max-width:900px; margin-left:auto; margin-right:auto;">
+  <h3 style="text-align:center; color:var(--accent-1); margin-bottom:24px;">Perguntas Frequentes</h3>
+  <div style="display:grid; gap:16px;">
+    <div class="faq-card" style="background:var(--glass-strong); padding:16px; border-radius:var(--card-radius); border:1px solid rgba(255,111,145,0.25); transition:transform .2s ease, box-shadow .2s ease;">
+      <strong>Quanto tempo leva para ver resultados?</strong>
+      <p style="margin:6px 0 0 0; color:#5e4b50; font-size:0.95rem;">O método é planejado para 12 semanas, com resultados visíveis dependendo da adesão ao plano e consistência.</p>
+    </div>
+    <div class="faq-card" style="background:var(--glass-strong); padding:16px; border-radius:var(--card-radius); border:1px solid rgba(255,111,145,0.25); transition:transform .2s ease, box-shadow .2s ease;">
+      <strong>Preciso de equipamentos ou academia?</strong>
+      <p style="margin:6px 0 0 0; color:#5e4b50; font-size:0.95rem;">Não. O e-book foca em estratégias alimentares e hábitos saudáveis, adaptáveis a qualquer rotina.</p>
+    </div>
+    <div class="faq-card" style="background:var(--glass-strong); padding:16px; border-radius:var(--card-radius); border:1px solid rgba(255,111,145,0.25); transition:transform .2s ease, box-shadow .2s ease;">
+      <strong>Existe garantia?</strong>
+      <p style="margin:6px 0 0 0; color:#5e4b50; font-size:0.95rem;">Sim. Se você seguir o método e não notar progresso, oferecemos suporte e orientações adicionais para ajustes.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer style="margin-top:80px; padding:40px 18px; text-align:center; color:var(--muted); border-top:1px solid rgba(255,111,145,0.1);">
+  <img src="/logo.png" alt="12 Semanas Logo" style="height:36px; margin-bottom:12px;">
+  <p>© 2025 12 Semanas de Transformação — Todos os direitos reservados.</p>
+  <p style="margin-top:6px;">Contato: suporte@12semanas.shop</p>
+</footer>
+
+<script>
+// Smooth scroll para links internos
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const el = document.getElementById(a.getAttribute('href').substring(1));
+    if(el) el.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// Hover FAQ
+document.querySelectorAll('.faq-card').forEach(card=>{
+  card.addEventListener('mouseenter', ()=> {
+    card.style.transform = 'translateY(-4px)';
+    card.style.boxShadow = '0 12px 28px rgba(255,111,145,0.2)';
+  });
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = 'translateY(0)';
+    card.style.boxShadow = 'none';
+  });
+});
+</script>
+</body>
+</html>
